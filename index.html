@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>吴雪凡 | 文字 摄影 影像</title>
+    <meta
+      name="description"
+      content="吴雪凡的个人网站，长期收录文字、摄影作品与剪辑视频。"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="回到首页">
+        <span class="brand-mark">雪</span>
+        <span>
+          <strong id="siteName">吴雪凡</strong>
+          <small id="siteTagline">文字 / 摄影 / 影像</small>
+        </span>
+      </a>
+      <nav class="nav" aria-label="主导航">
+        <a href="#writing">文字</a>
+        <a href="#photography">摄影</a>
+        <a href="#video">视频</a>
+        <a href="#archive">归档</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-media" aria-hidden="true">
+          <div class="hero-frame hero-frame-a"></div>
+          <div class="hero-frame hero-frame-b"></div>
+          <div class="hero-frame hero-frame-c"></div>
+        </div>
+        <div class="hero-copy">
+          <p class="eyebrow">Personal Archive</p>
+          <h1 id="hero-title">把正在看见、正在写下、正在剪出来的东西放在这里。</h1>
+          <p id="siteIntro">
+            这里会长期收录我的文字、摄影作品和剪辑视频。更新不追赶噪音，只保留真正想留下的片段。
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#latest">查看最新</a>
+            <a class="button secondary" href="#about">关于我</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section latest" id="latest" aria-labelledby="latest-title">
+        <div class="section-heading">
+          <p class="eyebrow">Latest</p>
+          <h2 id="latest-title">最新更新</h2>
+        </div>
+        <div class="latest-grid" id="latestGrid"></div>
+      </section>
+
+      <section class="section split" id="about" aria-labelledby="about-title">
+        <div>
+          <p class="eyebrow">About</p>
+          <h2 id="about-title">关于这个网站</h2>
+        </div>
+        <div class="about-copy">
+          <p id="aboutText">
+            这是一个个人作品与日常观察的长期档案。文字记录想法，照片保存现场，视频整理时间里的运动。
+          </p>
+          <dl class="facts" id="factsList"></dl>
+        </div>
+      </section>
+
+      <section class="section" id="writing" aria-labelledby="writing-title">
+        <div class="section-heading row">
+          <div>
+            <p class="eyebrow">Writing</p>
+            <h2 id="writing-title">文字</h2>
+          </div>
+          <a class="text-link" href="#archive">全部归档</a>
+        </div>
+        <div class="writing-list" id="writingList"></div>
+      </section>
+
+      <section class="section" id="photography" aria-labelledby="photo-title">
+        <div class="section-heading row">
+          <div>
+            <p class="eyebrow">Photography</p>
+            <h2 id="photo-title">摄影</h2>
+          </div>
+          <div class="filter-bar" id="photoFilters" aria-label="摄影分类筛选"></div>
+        </div>
+        <div class="photo-grid" id="photoGrid"></div>
+      </section>
+
+      <section class="section" id="video" aria-labelledby="video-title">
+        <div class="section-heading">
+          <p class="eyebrow">Video</p>
+          <h2 id="video-title">剪辑视频</h2>
+        </div>
+        <div class="video-grid" id="videoGrid"></div>
+      </section>
+
+      <section class="section archive" id="archive" aria-labelledby="archive-title">
+        <div class="section-heading">
+          <p class="eyebrow">Archive</p>
+          <h2 id="archive-title">归档索引</h2>
+        </div>
+        <div class="archive-list" id="archiveList"></div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>© <span id="year"></span> <span id="footerName">吴雪凡</span></p>
+      <a href="#top">回到顶部</a>
+    </footer>
+
+    <script src="content/site-content.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
