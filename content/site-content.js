@@ -41,6 +41,7 @@ window.SITE_CONTENT = {
       date: "2026-05-16",
       category: "城市",
       location: "Shanghai",
+      description: "可以在这里写下拍摄时间、地点、器材或当时的观察。",
       src: "",
     },
     {
@@ -48,6 +49,7 @@ window.SITE_CONTENT = {
       date: "2026-05-02",
       category: "日常",
       location: "Home",
+      description: "照片说明会出现在大图弹窗里，适合放一句简短的现场记录。",
       src: "",
     },
     {
@@ -55,6 +57,7 @@ window.SITE_CONTENT = {
       date: "2026-04-19",
       category: "纪实",
       location: "Street",
+      description: "如果暂时没有图片文件，页面会先显示占位视觉。",
       src: "",
     },
   ],

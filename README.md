@@ -45,6 +45,7 @@ personal website for sophie wu
   date: "2026-05-21",
   category: "城市",
   location: "Shanghai",
+  description: "照片说明，会显示在大图弹窗里",
   src: "assets/photos/photo-name.jpg"
 }
 ```
@@ -65,6 +66,31 @@ personal website for sophie wu
 ```
 
 也可以把 `url` 换成 Bilibili、YouTube、Vimeo 等外部链接。
+
+## 更新并发布
+
+每次修改内容或样式后，在项目目录里提交并推送：
+
+```powershell
+git add .
+git commit -m "Update website"
+git push
+```
+
+如果当前终端还没有识别 `git`，可以临时使用完整路径：
+
+```powershell
+& "D:\Tool\Git\cmd\git.exe" add .
+& "D:\Tool\Git\cmd\git.exe" commit -m "Update website"
+& "D:\Tool\Git\cmd\git.exe" push
+```
+
+## 当前交互
+
+- 摄影作品点击后会打开大图弹窗。
+- 视频作品点击后会打开播放弹窗。
+- 导航会根据页面滚动位置自动高亮。
+- 首页最新更新会按 `date` 自动排序。
 
 ## 推荐目录
 

@@ -9,21 +9,146 @@
       day: "2-digit",
     }).format(new Date(date));
 
-  const el = (tag, className, html) => {
+  const el = (tag, className, text) => {
     const node = document.createElement(tag);
     if (className) node.className = className;
-    if (html) node.innerHTML = html;
+    if (text) node.textContent = text;
     return node;
   };
 
+  const isRealUrl = (url) => Boolean(url && url !== "#");
+  const isVideoFile = (url) => /\.(mp4|webm|ogg|mov)(\?.*)?$/i.test(url || "");
+
+  const getEmbedUrl = (url) => {
+    if (!url) return "";
+
+    try {
+      const parsed = new URL(url, window.location.href);
+      const host = parsed.hostname.replace(/^www\./, "");
+
+      if (host === "youtube.com" && parsed.searchParams.get("v")) {
+        return `https://www.youtube.com/embed/${parsed.searchParams.get("v")}`;
+      }
+
+      if (host === "youtu.be") {
+        return `https://www.youtube.com/embed/${parsed.pathname.slice(1)}`;
+      }
+
+      if (host === "vimeo.com") {
+        const id = parsed.pathname.split("/").filter(Boolean)[0];
+        return id ? `https://player.vimeo.com/video/${id}` : "";
+      }
+
+      if (host === "bilibili.com") {
+        const match = parsed.pathname.match(/\/video\/([^/?]+)/);
+        return match ? `https://player.bilibili.com/player.html?bvid=${match[1]}` : "";
+      }
+    } catch (error) {
+      return "";
+    }
+
+    return "";
+  };
+
   const linkWrap = (item, child) => {
-    const href = item.url || "#";
     const anchor = el("a");
-    anchor.href = href;
-    if (href !== "#") anchor.target = "_blank";
-    if (href !== "#") anchor.rel = "noreferrer";
+    anchor.href = isRealUrl(item.url) ? item.url : "#";
+    if (isRealUrl(item.url)) {
+      anchor.target = "_blank";
+      anchor.rel = "noreferrer";
+    }
     anchor.appendChild(child);
     return anchor;
+  };
+
+  const modal = {
+    root: document.getElementById("mediaModal"),
+    media: document.getElementById("modalMedia"),
+    title: document.getElementById("modalTitle"),
+    meta: document.getElementById("modalMeta"),
+    description: document.getElementById("modalDescription"),
+    link: document.getElementById("modalLink"),
+  };
+
+  const photoArt = () => el("div", "fallback-art");
+
+  const renderImage = (item) => {
+    if (!item.src) return photoArt();
+
+    const image = el("img");
+    image.src = item.src;
+    image.alt = item.title;
+    image.loading = "lazy";
+    return image;
+  };
+
+  const renderVideoMedia = (item) => {
+    const url = item.url || "";
+    const embedUrl = getEmbedUrl(url);
+
+    if (isVideoFile(url)) {
+      const video = el("video");
+      video.src = url;
+      video.controls = true;
+      video.playsInline = true;
+      if (item.thumb) video.poster = item.thumb;
+      return video;
+    }
+
+    if (embedUrl) {
+      const iframe = el("iframe");
+      iframe.src = embedUrl;
+      iframe.title = item.title;
+      iframe.loading = "lazy";
+      iframe.allow = "autoplay; fullscreen; picture-in-picture";
+      iframe.allowFullscreen = true;
+      return iframe;
+    }
+
+    if (item.thumb) {
+      const image = el("img");
+      image.src = item.thumb;
+      image.alt = item.title;
+      image.loading = "lazy";
+      return image;
+    }
+
+    return photoArt();
+  };
+
+  const openModal = (item, type) => {
+    modal.media.replaceChildren(type === "视频" ? renderVideoMedia(item) : renderImage(item));
+    modal.title.textContent = item.title;
+    modal.meta.textContent = [type, item.category, item.location, formatDate(item.date)]
+      .filter(Boolean)
+      .join(" · ");
+    modal.description.textContent = item.excerpt || item.description || "";
+
+    const linkTarget = type === "摄影" ? item.src : item.url;
+    modal.link.href = isRealUrl(linkTarget) ? linkTarget : "#";
+    modal.link.classList.toggle("is-hidden", !isRealUrl(linkTarget));
+    modal.link.textContent = type === "摄影" ? "打开图片" : "打开原链接";
+
+    modal.root.classList.add("is-open");
+    modal.root.setAttribute("aria-hidden", "false");
+    document.body.classList.add("modal-open");
+  };
+
+  const closeModal = () => {
+    modal.root.classList.remove("is-open");
+    modal.root.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("modal-open");
+    modal.media.replaceChildren();
+  };
+
+  const interactiveWrap = (item, type, child) => {
+    if (type === "文字") return linkWrap(item, child);
+
+    const button = el("button", "card-button");
+    button.type = "button";
+    button.appendChild(child);
+    button.addEventListener("click", () => openModal(item, type));
+    return button;
   };
 
   const setProfile = () => {
@@ -50,69 +175,68 @@
       ...content.writing.map((item) => ({ ...item, type: "文字" })),
       ...content.photos.map((item) => ({ ...item, type: "摄影" })),
       ...content.videos.map((item) => ({ ...item, type: "视频" })),
-    ]
-      .sort(byDateDesc)
-      .slice(0, 3);
+    ].sort(byDateDesc);
+
+    document.getElementById("latestNote").textContent =
+      `当前收录 ${all.length} 条，最近更新 ${all[0] ? formatDate(all[0].date) : ""}`;
 
     document.getElementById("latestGrid").replaceChildren(
-      ...all.map((item) => {
-        const card = el(
-          "article",
-          "card",
-          `<span class="tag">${item.type}</span>
-           <h3>${item.title}</h3>
-           <p>${item.excerpt || item.description || item.location || ""}</p>
-           <p class="meta">${formatDate(item.date)}</p>`,
+      ...all.slice(0, 3).map((item) => {
+        const card = el("article", "card");
+        const top = el("div");
+        top.append(
+          el("span", "tag", item.type),
+          el("h3", "", item.title),
+          el("p", "", item.excerpt || item.description || item.location || ""),
         );
-        return linkWrap(item, card);
+        card.append(top, el("p", "meta", formatDate(item.date)));
+        return interactiveWrap(item, item.type, card);
       }),
     );
   };
 
   const renderWriting = () => {
+    document.getElementById("writingCount").textContent =
+      `共 ${content.writing.length} 篇`;
+
     document.getElementById("writingList").replaceChildren(
-      ...content.writing.sort(byDateDesc).map((item) => {
-        const article = el(
-          "article",
-          "writing-item",
-          `<p class="meta">${formatDate(item.date)} · ${item.category}</p>
-           <div>
-             <h3>${item.title}</h3>
-             <p>${item.excerpt}</p>
-           </div>
-           <strong>阅读</strong>`,
+      ...[...content.writing].sort(byDateDesc).map((item) => {
+        const article = el("article", "writing-item");
+        const copy = el("div");
+        copy.append(el("h3", "", item.title), el("p", "", item.excerpt));
+        article.append(
+          el("p", "meta", `${formatDate(item.date)} · ${item.category}`),
+          copy,
+          el("strong", "writing-action", "阅读"),
         );
         return linkWrap(item, article);
       }),
     );
   };
 
-  const photoArt = () => el("div", "fallback-art");
-
   const renderPhotos = (category = "全部") => {
     const photos =
       category === "全部"
-        ? content.photos
+        ? [...content.photos]
         : content.photos.filter((photo) => photo.category === category);
+
+    document.getElementById("photoCount").textContent =
+      category === "全部" ? `共 ${content.photos.length} 组照片` : `${category} · ${photos.length} 组`;
 
     document.getElementById("photoGrid").replaceChildren(
       ...photos.sort(byDateDesc).map((item) => {
-        const card = el("article", "photo-card");
-        const visual = item.src ? el("img") : photoArt();
-        if (item.src) {
-          visual.src = item.src;
-          visual.alt = item.title;
-          visual.loading = "lazy";
-        }
+        const card = el("button", "photo-card");
+        card.type = "button";
         card.append(
-          visual,
-          el(
-            "div",
-            "photo-caption",
-            `<h3>${item.title}</h3>
-             <p>${item.location} · ${formatDate(item.date)}</p>`,
-          ),
+          renderImage(item),
+          el("div", "photo-caption"),
         );
+        const caption = card.querySelector(".photo-caption");
+        caption.append(
+          el("h3", "", item.title),
+          el("p", "", `${item.location || "Unknown"} · ${formatDate(item.date)}`),
+        );
+        card.addEventListener("click", () => openModal(item, "摄影"));
         return card;
       }),
     );
@@ -139,10 +263,15 @@
   };
 
   const renderVideos = () => {
+    document.getElementById("videoCount").textContent =
+      `共 ${content.videos.length} 条视频`;
+
     document.getElementById("videoGrid").replaceChildren(
-      ...content.videos.sort(byDateDesc).map((item) => {
-        const card = el("article", "video-card");
+      ...[...content.videos].sort(byDateDesc).map((item) => {
+        const card = el("button", "video-card");
         const thumb = el("div", "video-thumb");
+        card.type = "button";
+
         if (item.thumb) {
           const image = el("img");
           image.src = item.thumb;
@@ -150,20 +279,19 @@
           image.loading = "lazy";
           thumb.appendChild(image);
         } else {
-          thumb.appendChild(el("div", "fallback-art"));
+          thumb.appendChild(photoArt());
         }
+
         thumb.appendChild(el("span", "play", "▶"));
-        card.append(
-          thumb,
-          el(
-            "div",
-            "content",
-            `<p class="meta">${formatDate(item.date)}</p>
-             <h3>${item.title}</h3>
-             <p>${item.description}</p>`,
-          ),
+        const copy = el("div", "content");
+        copy.append(
+          el("p", "meta", formatDate(item.date)),
+          el("h3", "", item.title),
+          el("p", "", item.description),
         );
-        return linkWrap(item, card);
+        card.append(thumb, copy);
+        card.addEventListener("click", () => openModal(item, "视频"));
+        return card;
       }),
     );
   };
@@ -176,16 +304,60 @@
     ].sort(byDateDesc);
 
     document.getElementById("archiveList").replaceChildren(
-      ...archive.map((item) =>
-        el(
-          "div",
-          "archive-row",
-          `<span class="meta">${formatDate(item.date)}</span>
-           <strong>${item.type}</strong>
-           <span>${item.title}</span>`,
-        ),
-      ),
+      ...archive.map((item) => {
+        const row = el("div", "archive-row");
+        row.append(
+          el("span", "meta", formatDate(item.date)),
+          el("strong", "", item.type),
+          el("span", "", item.title),
+        );
+        return row;
+      }),
     );
+  };
+
+  const setupModal = () => {
+    modal.root.addEventListener("click", (event) => {
+      if (event.target.closest("[data-close-modal]")) closeModal();
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && modal.root.classList.contains("is-open")) {
+        closeModal();
+      }
+    });
+  };
+
+  const setupNavHighlight = () => {
+    const links = [...document.querySelectorAll("[data-nav-link]")];
+    const sections = links
+      .map((link) => document.querySelector(link.getAttribute("href")))
+      .filter(Boolean);
+
+    if (!("IntersectionObserver" in window)) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+
+        if (!visible) return;
+
+        links.forEach((link) => {
+          const isActive = link.getAttribute("href") === `#${visible.target.id}`;
+          link.classList.toggle("is-active", isActive);
+          if (isActive) {
+            link.setAttribute("aria-current", "page");
+          } else {
+            link.removeAttribute("aria-current");
+          }
+        });
+      },
+      { rootMargin: "-30% 0px -55% 0px", threshold: [0.12, 0.4, 0.7] },
+    );
+
+    sections.forEach((section) => observer.observe(section));
   };
 
   setProfile();
@@ -195,4 +367,6 @@
   renderPhotos();
   renderVideos();
   renderArchive();
+  setupModal();
+  setupNavHighlight();
 })();
