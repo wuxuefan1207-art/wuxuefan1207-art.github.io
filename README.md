@@ -6,6 +6,12 @@ personal website for sophie wu
 
 这是一个不依赖构建工具的静态个人网站，适合长期维护文字、摄影作品和剪辑视频。
 
+完整素材上传流程见：
+
+```text
+docs/素材上传与发布教程.md
+```
+
 ## 直接预览
 
 双击 `index.html` 即可在浏览器里打开。
@@ -69,7 +75,19 @@ personal website for sophie wu
 
 ## 更新并发布
 
-每次修改内容或样式后，在项目目录里提交并推送：
+每次修改内容或样式后，推荐运行一键发布脚本：
+
+```powershell
+.\scripts\publish.ps1 -Message "Update website content"
+```
+
+如果 PowerShell 提示脚本执行策略限制，可以改用：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\publish.ps1 -Message "Update website content"
+```
+
+也可以手动提交并推送：
 
 ```powershell
 git add .
