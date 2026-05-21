@@ -37,6 +37,14 @@ window.SITE_CONTENT = {
   ],
   photos: [
     {
+      title: "玉兰",
+      date: "2026-03-07",
+      category: "日常",
+      location: "杭州",
+      description: "如玉质感。",
+      src: "assets/photos/260307-yulan-01.JPG",
+    },
+    {
       title: "街角的光",
       date: "2026-05-16",
       category: "城市",
