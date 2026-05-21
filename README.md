@@ -1,4 +1,8 @@
-# 个人网站维护说明
+# wuxuefan1207-art.github.io
+
+personal website for sophie wu
+
+## 个人网站维护说明
 
 这是一个不依赖构建工具的静态个人网站，适合长期维护文字、摄影作品和剪辑视频。
 
