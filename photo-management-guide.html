@@ -170,11 +170,14 @@
   location: "新加坡-樟宜机场",
   description: "花园景观，令人震惊的园林水平",
   src: "assets/photos/display/250131-singapore-airport.webp",
+  keywords: ["新加坡", "机场", "园林", "旅行观察"],
   relatedWritingIds: ["after-shooting-note"],
+  exhibitionIds: ["example-exhibition"],
 },</code></pre>
           <p class="note">
             <code>id</code> 建议和图片文件名一致，但不要带 <code>.JPG</code> 后缀。
-            <code>relatedWritingIds</code> 是可选字段，用于关联文字内容；没有相关文字时可以不写。
+            <code>keywords</code>、<code>relatedWritingIds</code>、<code>exhibitionIds</code>
+            都可以先留空数组。
           </p>
         </div>
       </section>
@@ -221,6 +224,24 @@ assets/photos/large/250131-singapore-airport.webp</code></pre>
       <section>
         <div class="step">Step 05</div>
         <div>
+          <h2>标注关键词与摄影展</h2>
+          <p>
+            关键词用于描述照片内部的线索；摄影展 ID 用于说明这张照片属于哪些线上摄影展。
+            它们暂时不作为强检索入口，只作为后续策展和关联展示的基础。
+          </p>
+          <pre><code>keywords: ["宗教建筑", "白色", "宁静", "新加坡"],
+exhibitionIds: ["religious-quiet-online"],</code></pre>
+          <p class="note">
+            一张照片可以属于多个摄影展，例如
+            <code>exhibitionIds: ["religious-quiet-online", "singapore-walk"]</code>。
+            这和分类不同，摄影展更强调观看顺序、主题表达和图片之间的关系。
+          </p>
+        </div>
+      </section>
+
+      <section>
+        <div class="step">Step 06</div>
+        <div>
           <h2>关联摄影与文字</h2>
           <p>
             每篇文字需要有自己的 <code>id</code>。照片如果与某篇文字相关，
@@ -244,7 +265,7 @@ assets/photos/large/250131-singapore-airport.webp</code></pre>
       </section>
 
       <section>
-        <div class="step">Step 06</div>
+        <div class="step">Step 07</div>
         <div>
           <h2>新建摄影集</h2>
           <p>在 <code>photoCollections</code> 里新增一组数据：</p>
@@ -267,7 +288,7 @@ assets/photos/large/250131-singapore-airport.webp</code></pre>
       </section>
 
       <section>
-        <div class="step">Step 07</div>
+        <div class="step">Step 08</div>
         <div>
           <h2>预览摄影集</h2>
           <p>本地打开以下格式的地址：</p>
@@ -288,8 +309,10 @@ assets/photos/large/250131-singapore-airport.webp</code></pre>
 分类/主题：
 地点：
 一句说明：
+关键词：
 可归入摄影集：
 相关文字：
+可归入摄影展：
 是否作为封面：</code></pre>
         </div>
       </section>

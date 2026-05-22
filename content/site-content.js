@@ -47,6 +47,9 @@ window.SITE_CONTENT = {
       location: "新加坡-樟宜机场",
       description: "花园景观，令人震惊的园林水平",
       src: "assets/photos/display/250131-singapore-airport.webp",
+      keywords: [],
+      relatedWritingIds: [],
+      exhibitionIds: [],
     },
     {
       id: "250131-singapore-police-office",
@@ -56,6 +59,9 @@ window.SITE_CONTENT = {
       location: "新加坡",
       description: "",
       src: "assets/photos/display/250131-singapore-police-office.webp",
+      keywords: [],
+      relatedWritingIds: [],
+      exhibitionIds: [],
     },
     {
       id: "250204-singapore-church",
@@ -65,6 +71,9 @@ window.SITE_CONTENT = {
       location: "新加坡-圣安德烈教堂",
       description: "在这里体会一种宗教宁静。",
       src: "assets/photos/display/250204-singapore-church.webp",
+      keywords: [],
+      relatedWritingIds: [],
+      exhibitionIds: [],
     },
     {
       id: "250204-singapore-muslim",
@@ -74,6 +83,9 @@ window.SITE_CONTENT = {
       location: "新加坡-苏丹回教堂",
       description: "在这里体会一种宗教宁静。",
       src: "assets/photos/display/250204-singapore-muslim.webp",
+      keywords: [],
+      relatedWritingIds: [],
+      exhibitionIds: [],
     },
     {
       id: "250202-singapore-beach",
@@ -83,6 +95,9 @@ window.SITE_CONTENT = {
       location: "新加坡-圣淘沙岛",
       description: "海浪、沙滩、野餐，身为游客想象当地居民的生活",
       src: "assets/photos/display/250202-singapore-beach.webp",
+      keywords: [],
+      relatedWritingIds: [],
+      exhibitionIds: [],
     },
     {
       id: "250201-singapore-wolf",
@@ -92,6 +107,9 @@ window.SITE_CONTENT = {
       location: "新加坡-夜间动物园 Night Safari",
       description: "有点遗憾没从有蝙蝠飞过头顶的游步道行走。",
       src: "assets/photos/display/250201-singapore-wolf.webp",
+      keywords: [],
+      relatedWritingIds: [],
+      exhibitionIds: [],
     },
     {
       id: "250201-singapore-lizard",
@@ -101,6 +119,9 @@ window.SITE_CONTENT = {
       location: "新加坡-河川生态园-Mandai River Wonders",
       description: "好想摸摸它的皮肤是什么触感。",
       src: "assets/photos/display/250201-singapore-lizard.webp",
+      keywords: [],
+      relatedWritingIds: [],
+      exhibitionIds: [],
     },
     {
       id: "250203-singapore-leaves",
@@ -110,6 +131,9 @@ window.SITE_CONTENT = {
       location: "新加坡",
       description: "",
       src: "assets/photos/display/250203-singapore-leaves.webp",
+      keywords: [],
+      relatedWritingIds: [],
+      exhibitionIds: [],
     },
     {
       id: "250204-singapore-alley",
@@ -119,6 +143,9 @@ window.SITE_CONTENT = {
       location: "新加坡",
       description: "",
       src: "assets/photos/display/250204-singapore-alley.webp",
+      keywords: [],
+      relatedWritingIds: [],
+      exhibitionIds: [],
     },
     {
       id: "250204-singapore-river",
@@ -128,6 +155,9 @@ window.SITE_CONTENT = {
       location: "新加坡",
       description: "",
       src: "assets/photos/display/250204-singapore-river.webp",
+      keywords: [],
+      relatedWritingIds: [],
+      exhibitionIds: [],
     },
     {
       id: "250301-light-01",
@@ -137,6 +167,9 @@ window.SITE_CONTENT = {
       location: "杭州-吴山明美术馆",
       description: "虚拟手电，实体照亮",
       src: "assets/photos/display/250301-light-01.webp",
+      keywords: [],
+      relatedWritingIds: [],
+      exhibitionIds: [],
     },
     {
       id: "250301-hangzhou-bay",
@@ -146,6 +179,9 @@ window.SITE_CONTENT = {
       location: "杭州",
       description: "",
       src: "assets/photos/display/250301-hangzhou-bay.webp",
+      keywords: [],
+      relatedWritingIds: [],
+      exhibitionIds: [],
     },
     {
       id: "250301-hangzhou-insect",
@@ -155,6 +191,9 @@ window.SITE_CONTENT = {
       location: "杭州",
       description: "",
       src: "assets/photos/display/250301-hangzhou-insect.webp",
+      keywords: [],
+      relatedWritingIds: [],
+      exhibitionIds: [],
     },
     {
       id: "250301-hangzhou-shancha18",
@@ -164,6 +203,9 @@ window.SITE_CONTENT = {
       location: "杭州",
       description: "",
       src: "assets/photos/display/250301-hangzhou-shancha18.webp",
+      keywords: [],
+      relatedWritingIds: [],
+      exhibitionIds: [],
     },
     {
       id: "250404-plant-can",
@@ -173,6 +215,9 @@ window.SITE_CONTENT = {
       location: "杭州",
       description: "",
       src: "assets/photos/display/250404-plant-can.webp",
+      keywords: [],
+      relatedWritingIds: [],
+      exhibitionIds: [],
     },
     {
       id: "250810-taiping-tree",
@@ -182,6 +227,9 @@ window.SITE_CONTENT = {
       location: "太平",
       description: "",
       src: "assets/photos/display/250810-taiping-tree.webp",
+      keywords: [],
+      relatedWritingIds: [],
+      exhibitionIds: [],
     },
     {
       id: "250819-hongkong-buildings1",
@@ -191,6 +239,9 @@ window.SITE_CONTENT = {
       location: "香港",
       description: "",
       src: "assets/photos/display/250819-hongkong-buildings1.webp",
+      keywords: [],
+      relatedWritingIds: [],
+      exhibitionIds: [],
     },
     {
       id: "250819-hongkong-buildings2",
@@ -200,6 +251,9 @@ window.SITE_CONTENT = {
       location: "香港",
       description: "",
       src: "assets/photos/display/250819-hongkong-buildings2.webp",
+      keywords: [],
+      relatedWritingIds: [],
+      exhibitionIds: [],
     },
     {
       id: "250819-hongkong-buildings3",
@@ -209,6 +263,9 @@ window.SITE_CONTENT = {
       location: "香港",
       description: "",
       src: "assets/photos/display/250819-hongkong-buildings3.webp",
+      keywords: [],
+      relatedWritingIds: [],
+      exhibitionIds: [],
     },
     {
       id: "250819-hongkong-buildings4",
@@ -218,6 +275,9 @@ window.SITE_CONTENT = {
       location: "香港",
       description: "",
       src: "assets/photos/display/250819-hongkong-buildings4.webp",
+      keywords: [],
+      relatedWritingIds: [],
+      exhibitionIds: [],
     },
     {
       id: "250819-hongkong-buildings5",
@@ -227,6 +287,9 @@ window.SITE_CONTENT = {
       location: "香港",
       description: "",
       src: "assets/photos/display/250819-hongkong-buildings5.webp",
+      keywords: [],
+      relatedWritingIds: [],
+      exhibitionIds: [],
     },
     {
       id: "250820-hongkong-lkh1",
@@ -236,6 +299,9 @@ window.SITE_CONTENT = {
       location: "香港",
       description: "",
       src: "assets/photos/display/250820-hongkong-lkh1.webp",
+      keywords: [],
+      relatedWritingIds: [],
+      exhibitionIds: [],
     },
     {
       id: "250820-hongkong-lkh2",
@@ -245,6 +311,9 @@ window.SITE_CONTENT = {
       location: "香港",
       description: "",
       src: "assets/photos/display/250820-hongkong-lkh2.webp",
+      keywords: [],
+      relatedWritingIds: [],
+      exhibitionIds: [],
     },
     {
       id: "250820-hongkong-traffic-light",
@@ -254,6 +323,9 @@ window.SITE_CONTENT = {
       location: "香港",
       description: "",
       src: "assets/photos/display/250820-hongkong-traffic-light.webp",
+      keywords: [],
+      relatedWritingIds: [],
+      exhibitionIds: [],
     },
     {
       id: "250820-hongkong-tree",
@@ -263,6 +335,9 @@ window.SITE_CONTENT = {
       location: "香港",
       description: "",
       src: "assets/photos/display/250820-hongkong-tree.webp",
+      keywords: [],
+      relatedWritingIds: [],
+      exhibitionIds: [],
     },
     {
       id: "250821-hongkong-zoo-bird",
@@ -272,6 +347,9 @@ window.SITE_CONTENT = {
       location: "香港",
       description: "",
       src: "assets/photos/display/250821-hongkong-zoo-bird.webp",
+      keywords: [],
+      relatedWritingIds: [],
+      exhibitionIds: [],
     },
     {
       id: "250822-hongkong-stanley1",
@@ -281,6 +359,9 @@ window.SITE_CONTENT = {
       location: "香港-赤柱",
       description: "",
       src: "assets/photos/display/250822-hongkong-stanley1.webp",
+      keywords: [],
+      relatedWritingIds: [],
+      exhibitionIds: [],
     },
     {
       id: "250822-hongkong-stanley2",
@@ -290,6 +371,9 @@ window.SITE_CONTENT = {
       location: "香港-赤柱",
       description: "",
       src: "assets/photos/display/250822-hongkong-stanley2.webp",
+      keywords: [],
+      relatedWritingIds: [],
+      exhibitionIds: [],
     },
     {
       id: "250822-hongkong-stanley3",
@@ -299,6 +383,9 @@ window.SITE_CONTENT = {
       location: "香港-赤柱",
       description: "",
       src: "assets/photos/display/250822-hongkong-stanley3.webp",
+      keywords: [],
+      relatedWritingIds: [],
+      exhibitionIds: [],
     },
     {
       id: "250822-hongkong-stanley4",
@@ -308,6 +395,9 @@ window.SITE_CONTENT = {
       location: "香港-赤柱",
       description: "",
       src: "assets/photos/display/250822-hongkong-stanley4.webp",
+      keywords: [],
+      relatedWritingIds: [],
+      exhibitionIds: [],
     },
     {
       id: "250822-hongkong-stanley5",
@@ -317,6 +407,9 @@ window.SITE_CONTENT = {
       location: "香港-赤柱",
       description: "",
       src: "assets/photos/display/250822-hongkong-stanley5.webp",
+      keywords: [],
+      relatedWritingIds: [],
+      exhibitionIds: [],
     },
     {
       id: "250822-hongkong-university-bird",
@@ -326,6 +419,9 @@ window.SITE_CONTENT = {
       location: "香港大学",
       description: "",
       src: "assets/photos/display/250822-hongkong-university-bird.webp",
+      keywords: [],
+      relatedWritingIds: [],
+      exhibitionIds: [],
     },
     {
       id: "250822-hangzhou-huagangguanyu",
@@ -335,6 +431,9 @@ window.SITE_CONTENT = {
       location: "杭州-花港观鱼",
       description: "",
       src: "assets/photos/display/250822-hangzhou-huagangguanyu.webp",
+      keywords: [],
+      relatedWritingIds: [],
+      exhibitionIds: [],
     },
     {
       id: "250822-hangzhou-taiziwan",
@@ -344,6 +443,9 @@ window.SITE_CONTENT = {
       location: "杭州-太子湾",
       description: "",
       src: "assets/photos/display/250822-hangzhou-taiziwan.webp",
+      keywords: [],
+      relatedWritingIds: [],
+      exhibitionIds: [],
     },
     {
       id: "251116-hangzhou-jaguar",
@@ -353,6 +455,9 @@ window.SITE_CONTENT = {
       location: "杭州",
       description: "",
       src: "assets/photos/display/251116-hangzhou-jaguar.webp",
+      keywords: [],
+      relatedWritingIds: [],
+      exhibitionIds: [],
     },
     {
       id: "251228-hangzhou-tower",
@@ -362,6 +467,9 @@ window.SITE_CONTENT = {
       location: "杭州",
       description: "",
       src: "assets/photos/display/251228-hangzhou-tower.webp",
+      keywords: [],
+      relatedWritingIds: [],
+      exhibitionIds: [],
     },
     {
       id: "260307-yulan-01",
@@ -371,6 +479,9 @@ window.SITE_CONTENT = {
       location: "杭州",
       description: "如玉质感。",
       src: "assets/photos/display/260307-yulan-01.webp",
+      keywords: [],
+      relatedWritingIds: [],
+      exhibitionIds: [],
     },
   ],
   photoCollections: [

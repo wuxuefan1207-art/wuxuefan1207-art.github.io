@@ -280,6 +280,7 @@
     const photoCount = document.getElementById("photoCount");
     const photoGrid = document.getElementById("photoGrid");
     if (!photoCount || !photoGrid) return;
+    photoGrid.classList.add("all-photos-grid");
 
     const photos =
       category === "全部"
@@ -290,7 +291,7 @@
       category === "全部" ? `共 ${visiblePhotos().length} 张照片，随机排列` : `${category} · ${photos.length} 张`;
 
     photoGrid.replaceChildren(
-      ...shuffle(photos).map((item) => photoCard(item)),
+      ...shuffle(photos).map((item) => photoCard(item, "is-index-photo")),
     );
   };
 
@@ -373,7 +374,6 @@
     }
 
     const photos = collectionPhotos(collection);
-    const cover = collectionCover(collection);
     document.title = `${collection.title} | 摄影集`;
     if (title) title.textContent = `${collection.title} · ${photos.length} 张照片`;
 
@@ -399,16 +399,21 @@
       metaList,
     );
 
-    const media = el("div", "collection-hero-media");
-    if (cover) media.append(renderImage(cover));
-    hero.replaceChildren(copy, media);
+    const summary = el("aside", "collection-hero-summary");
+    summary.append(
+      el("span", "showcase-kicker", "Open Collection"),
+      el("strong", "", `${photos.length}`),
+      el("em", "", "photographs"),
+    );
+    hero.replaceChildren(copy, summary);
 
     const sequence = [];
     photos.forEach((item, index) => {
       const classes = [
-        index === 0 ? "is-featured-photo" : "",
+        index === 0 ? "is-opening-photo" : "",
         index === 1 ? "is-quiet-photo" : "",
-        index === 2 ? "is-tall-photo" : "",
+        index === 2 ? "is-wide-photo" : "",
+        index === 3 ? "is-tall-photo" : "",
       ]
         .filter(Boolean)
         .join(" ");
