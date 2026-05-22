@@ -2,6 +2,7 @@
   document.documentElement.classList.add("has-js");
 
   const content = window.SITE_CONTENT;
+  const visiblePhotos = () => content.photos.filter((photo) => photo.src);
 
   const byDateDesc = (a, b) => new Date(b.date) - new Date(a.date);
   const formatDate = (date) =>
@@ -188,7 +189,7 @@
 
     const all = [
       ...content.writing.map((item) => ({ ...item, type: "文字" })),
-      ...content.photos.map((item) => ({ ...item, type: "摄影" })),
+      ...visiblePhotos().map((item) => ({ ...item, type: "摄影" })),
       ...content.videos.map((item) => ({ ...item, type: "视频" })),
     ].sort(byDateDesc);
 
@@ -246,11 +247,11 @@
 
     const photos =
       category === "全部"
-        ? [...content.photos]
-        : content.photos.filter((photo) => photo.category === category);
+        ? visiblePhotos()
+        : visiblePhotos().filter((photo) => photo.category === category);
 
     photoCount.textContent =
-      category === "全部" ? `共 ${content.photos.length} 组照片` : `${category} · ${photos.length} 组`;
+      category === "全部" ? `共 ${visiblePhotos().length} 组照片` : `${category} · ${photos.length} 组`;
 
     photoGrid.replaceChildren(
       ...photos.sort(byDateDesc).map((item) => {
@@ -276,8 +277,7 @@
     const note = document.getElementById("photoShowcaseNote");
     if (!showcase || !note) return;
 
-    const photosWithImages = content.photos.filter((photo) => photo.src);
-    const source = photosWithImages.length ? photosWithImages : content.photos;
+    const source = visiblePhotos();
     const categories = [...new Set(source.map((photo) => photo.category))];
     note.textContent = `当前展示 ${categories.length} 个有封面的摄影主题，进入后可查看完整照片墙。`;
 
@@ -307,7 +307,7 @@
     const filterBar = document.getElementById("photoFilters");
     if (!filterBar) return;
 
-    const categories = ["全部", ...new Set(content.photos.map((photo) => photo.category))];
+    const categories = ["全部", ...new Set(visiblePhotos().map((photo) => photo.category))];
     const params = new URLSearchParams(window.location.search);
     const requestedCategory = params.get("category") || "全部";
     const initialCategory = categories.includes(requestedCategory) ? requestedCategory : "全部";
@@ -374,7 +374,7 @@
 
     const archive = [
       ...content.writing.map((item) => ({ ...item, type: "文字" })),
-      ...content.photos.map((item) => ({ ...item, type: "摄影" })),
+      ...visiblePhotos().map((item) => ({ ...item, type: "摄影" })),
       ...content.videos.map((item) => ({ ...item, type: "视频" })),
     ].sort(byDateDesc);
 
