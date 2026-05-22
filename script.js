@@ -1,4 +1,6 @@
 (function () {
+  document.documentElement.classList.add("has-js");
+
   const content = window.SITE_CONTENT;
 
   const byDateDesc = (a, b) => new Date(b.date) - new Date(a.date);
@@ -153,14 +155,23 @@
 
   const setProfile = () => {
     document.title = `${content.profile.name} | 文字 摄影 影像`;
-    document.getElementById("siteName").textContent = content.profile.name;
-    document.getElementById("siteTagline").textContent = content.profile.tagline;
-    document.getElementById("siteIntro").textContent = content.profile.intro;
-    document.getElementById("aboutText").textContent = content.profile.about;
-    document.getElementById("footerName").textContent = content.profile.name;
-    document.getElementById("year").textContent = new Date().getFullYear();
+    const siteName = document.getElementById("siteName");
+    const siteTagline = document.getElementById("siteTagline");
+    const siteIntro = document.getElementById("siteIntro");
+    const aboutText = document.getElementById("aboutText");
+    const footerName = document.getElementById("footerName");
+    const year = document.getElementById("year");
+
+    if (siteName) siteName.textContent = content.profile.name;
+    if (siteTagline) siteTagline.textContent = content.profile.tagline;
+    if (siteIntro) siteIntro.textContent = content.profile.intro;
+    if (aboutText) aboutText.textContent = content.profile.about;
+    if (footerName) footerName.textContent = content.profile.name;
+    if (year) year.textContent = new Date().getFullYear();
 
     const facts = document.getElementById("factsList");
+    if (!facts) return;
+
     facts.replaceChildren(
       ...content.profile.facts.map(([label, value]) => {
         const item = el("div");
@@ -171,19 +182,30 @@
   };
 
   const renderLatest = () => {
+    const latestGrid = document.getElementById("latestGrid");
+    const latestNote = document.getElementById("latestNote");
+    if (!latestGrid || !latestNote) return;
+
     const all = [
       ...content.writing.map((item) => ({ ...item, type: "文字" })),
       ...content.photos.map((item) => ({ ...item, type: "摄影" })),
       ...content.videos.map((item) => ({ ...item, type: "视频" })),
     ].sort(byDateDesc);
 
-    document.getElementById("latestNote").textContent =
+    latestNote.textContent =
       `当前收录 ${all.length} 条，最近更新 ${all[0] ? formatDate(all[0].date) : ""}`;
 
-    document.getElementById("latestGrid").replaceChildren(
+    latestGrid.replaceChildren(
       ...all.slice(0, 3).map((item) => {
-        const card = el("article", "card");
+        const card = el("article", `card latest-card ${item.type === "摄影" ? "has-media" : ""}`);
         const top = el("div");
+
+        if (item.type === "摄影") {
+          const media = el("div", "latest-media");
+          media.appendChild(renderImage(item));
+          card.appendChild(media);
+        }
+
         top.append(
           el("span", "tag", item.type),
           el("h3", "", item.title),
@@ -196,10 +218,13 @@
   };
 
   const renderWriting = () => {
-    document.getElementById("writingCount").textContent =
-      `共 ${content.writing.length} 篇`;
+    const writingCount = document.getElementById("writingCount");
+    const writingList = document.getElementById("writingList");
+    if (!writingCount || !writingList) return;
 
-    document.getElementById("writingList").replaceChildren(
+    writingCount.textContent = `共 ${content.writing.length} 篇`;
+
+    writingList.replaceChildren(
       ...[...content.writing].sort(byDateDesc).map((item) => {
         const article = el("article", "writing-item");
         const copy = el("div");
@@ -215,15 +240,19 @@
   };
 
   const renderPhotos = (category = "全部") => {
+    const photoCount = document.getElementById("photoCount");
+    const photoGrid = document.getElementById("photoGrid");
+    if (!photoCount || !photoGrid) return;
+
     const photos =
       category === "全部"
         ? [...content.photos]
         : content.photos.filter((photo) => photo.category === category);
 
-    document.getElementById("photoCount").textContent =
+    photoCount.textContent =
       category === "全部" ? `共 ${content.photos.length} 组照片` : `${category} · ${photos.length} 组`;
 
-    document.getElementById("photoGrid").replaceChildren(
+    photoGrid.replaceChildren(
       ...photos.sort(byDateDesc).map((item) => {
         const card = el("button", "photo-card");
         card.type = "button";
@@ -242,14 +271,52 @@
     );
   };
 
+  const renderPhotoShowcase = () => {
+    const showcase = document.getElementById("photoShowcase");
+    const note = document.getElementById("photoShowcaseNote");
+    if (!showcase || !note) return;
+
+    const photosWithImages = content.photos.filter((photo) => photo.src);
+    const source = photosWithImages.length ? photosWithImages : content.photos;
+    const categories = [...new Set(source.map((photo) => photo.category))];
+    note.textContent = `当前展示 ${categories.length} 个有封面的摄影主题，进入后可查看完整照片墙。`;
+
+    showcase.replaceChildren(
+      ...categories.map((category) => {
+        const photos = source
+          .filter((photo) => photo.category === category)
+          .sort(byDateDesc);
+        const cover = photos[0];
+        const card = el("a", "showcase-card");
+        card.href = `photography.html?category=${encodeURIComponent(category)}`;
+        card.append(renderImage(cover));
+
+        const copy = el("span", "showcase-copy");
+        copy.append(
+          el("span", "showcase-kicker", `${photos.length} 组照片`),
+          el("strong", "", category),
+          el("span", "", cover.description || cover.location || ""),
+        );
+        card.appendChild(copy);
+        return card;
+      }),
+    );
+  };
+
   const renderPhotoFilters = () => {
-    const categories = ["全部", ...new Set(content.photos.map((photo) => photo.category))];
     const filterBar = document.getElementById("photoFilters");
+    if (!filterBar) return;
+
+    const categories = ["全部", ...new Set(content.photos.map((photo) => photo.category))];
+    const params = new URLSearchParams(window.location.search);
+    const requestedCategory = params.get("category") || "全部";
+    const initialCategory = categories.includes(requestedCategory) ? requestedCategory : "全部";
+
     filterBar.replaceChildren(
       ...categories.map((category) => {
         const button = el("button", "filter-button", category);
         button.type = "button";
-        if (category === "全部") button.classList.add("is-active");
+        if (category === initialCategory) button.classList.add("is-active");
         button.addEventListener("click", () => {
           filterBar
             .querySelectorAll(".filter-button")
@@ -260,13 +327,18 @@
         return button;
       }),
     );
+
+    renderPhotos(initialCategory);
   };
 
   const renderVideos = () => {
-    document.getElementById("videoCount").textContent =
-      `共 ${content.videos.length} 条视频`;
+    const videoCount = document.getElementById("videoCount");
+    const videoGrid = document.getElementById("videoGrid");
+    if (!videoCount || !videoGrid) return;
 
-    document.getElementById("videoGrid").replaceChildren(
+    videoCount.textContent = `共 ${content.videos.length} 条视频`;
+
+    videoGrid.replaceChildren(
       ...[...content.videos].sort(byDateDesc).map((item) => {
         const card = el("button", "video-card");
         const thumb = el("div", "video-thumb");
@@ -297,13 +369,16 @@
   };
 
   const renderArchive = () => {
+    const archiveList = document.getElementById("archiveList");
+    if (!archiveList) return;
+
     const archive = [
       ...content.writing.map((item) => ({ ...item, type: "文字" })),
       ...content.photos.map((item) => ({ ...item, type: "摄影" })),
       ...content.videos.map((item) => ({ ...item, type: "视频" })),
     ].sort(byDateDesc);
 
-    document.getElementById("archiveList").replaceChildren(
+    archiveList.replaceChildren(
       ...archive.map((item) => {
         const row = el("div", "archive-row");
         row.append(
@@ -317,6 +392,8 @@
   };
 
   const setupModal = () => {
+    if (!modal.root) return;
+
     modal.root.addEventListener("click", (event) => {
       if (event.target.closest("[data-close-modal]")) closeModal();
     });
@@ -330,8 +407,19 @@
 
   const setupNavHighlight = () => {
     const links = [...document.querySelectorAll("[data-nav-link]")];
+    const currentPage = window.location.pathname.split("/").pop() || "index.html";
+    links.forEach((link) => {
+      const href = link.getAttribute("href");
+      if (href === currentPage) {
+        link.classList.add("is-active");
+        link.setAttribute("aria-current", "page");
+      }
+    });
+
     const sections = links
-      .map((link) => document.querySelector(link.getAttribute("href")))
+      .map((link) => link.getAttribute("href"))
+      .filter((href) => href && href.startsWith("#"))
+      .map((href) => document.querySelector(href))
       .filter(Boolean);
 
     if (!("IntersectionObserver" in window)) return;
@@ -360,13 +448,43 @@
     sections.forEach((section) => observer.observe(section));
   };
 
+  const setupReveal = () => {
+    const targets = [
+      ...document.querySelectorAll(
+        ".section, .card, .writing-item, .photo-card, .video-card, .archive-row",
+      ),
+    ];
+
+    targets.forEach((target) => target.classList.add("reveal"));
+
+    if (!("IntersectionObserver" in window)) {
+      targets.forEach((target) => target.classList.add("is-visible"));
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
+        });
+      },
+      { rootMargin: "0px 0px -8% 0px", threshold: 0.12 },
+    );
+
+    targets.forEach((target) => observer.observe(target));
+  };
+
   setProfile();
   renderLatest();
   renderWriting();
+  renderPhotoShowcase();
   renderPhotoFilters();
-  renderPhotos();
+  if (!document.getElementById("photoFilters")) renderPhotos();
   renderVideos();
   renderArchive();
   setupModal();
   setupNavHighlight();
+  setupReveal();
 })();

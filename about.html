@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>关于 | 吴雪凡</title>
+    <meta name="description" content="关于吴雪凡和这个个人网站。" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#about">跳到内容</a>
+
+    <header class="site-header">
+      <a class="brand" href="index.html" aria-label="回到首页">
+        <span class="brand-mark">雪</span>
+        <span>
+          <strong id="siteName">吴雪凡</strong>
+          <small id="siteTagline">文字 / 摄影 / 影像</small>
+        </span>
+      </a>
+      <nav class="nav" aria-label="主导航">
+        <a href="index.html" data-nav-link>首页</a>
+        <a href="photography.html" data-nav-link>摄影</a>
+        <a href="writing.html" data-nav-link>文字</a>
+        <a href="video.html" data-nav-link>视频</a>
+        <a href="about.html" data-nav-link>关于</a>
+        <a href="archive.html" data-nav-link>归档</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="page-hero">
+        <p class="eyebrow">About</p>
+        <h1>关于这个网站</h1>
+        <p id="aboutText">这是一个个人作品与日常观察的长期档案。</p>
+      </section>
+
+      <section class="section split" id="about" aria-labelledby="about-title">
+        <div>
+          <p class="eyebrow">Profile</p>
+          <h2 id="about-title">个人档案</h2>
+        </div>
+        <div class="about-copy">
+          <dl class="facts" id="factsList"></dl>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>© <span id="year"></span> <span id="footerName">吴雪凡</span></p>
+      <a href="index.html">回到首页</a>
+    </footer>
+
+    <script src="content/site-content.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>

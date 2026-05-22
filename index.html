@@ -22,11 +22,12 @@
         </span>
       </a>
       <nav class="nav" aria-label="主导航">
-        <a href="#about" data-nav-link>关于</a>
-        <a href="#writing" data-nav-link>文字</a>
-        <a href="#photography" data-nav-link>摄影</a>
-        <a href="#video" data-nav-link>视频</a>
-        <a href="#archive" data-nav-link>归档</a>
+        <a href="index.html" data-nav-link>首页</a>
+        <a href="photography.html" data-nav-link>摄影</a>
+        <a href="writing.html" data-nav-link>文字</a>
+        <a href="video.html" data-nav-link>视频</a>
+        <a href="about.html" data-nav-link>关于</a>
+        <a href="archive.html" data-nav-link>归档</a>
       </nav>
     </header>
 
@@ -48,7 +49,7 @@
           </p>
           <div class="hero-actions">
             <a class="button primary" href="#latest">查看最新</a>
-            <a class="button secondary" href="#about">关于我</a>
+            <a class="button secondary" href="photography.html">进入摄影</a>
           </div>
         </div>
       </section>
@@ -64,6 +65,20 @@
         <div class="latest-grid" id="latestGrid"></div>
       </section>
 
+      <section class="section exhibition" id="photography" aria-labelledby="photo-title">
+        <div class="section-heading row">
+          <div>
+            <p class="eyebrow">Photography</p>
+            <h2 id="photo-title">摄影展厅</h2>
+          </div>
+          <div>
+            <p class="section-note" id="photoShowcaseNote"></p>
+            <a class="text-link" href="photography.html">查看全部摄影</a>
+          </div>
+        </div>
+        <div class="photo-showcase" id="photoShowcase" aria-label="摄影主题"></div>
+      </section>
+
       <section class="section split" id="about" aria-labelledby="about-title">
         <div>
           <p class="eyebrow">About</p>
@@ -74,51 +89,8 @@
             这是一个个人作品与日常观察的长期档案。文字记录想法，照片保存现场，视频整理时间里的运动。
           </p>
           <dl class="facts" id="factsList"></dl>
+          <a class="button secondary inline-button" href="about.html">继续阅读</a>
         </div>
-      </section>
-
-      <section class="section" id="writing" aria-labelledby="writing-title">
-        <div class="section-heading row">
-          <div>
-            <p class="eyebrow">Writing</p>
-            <h2 id="writing-title">文字</h2>
-          </div>
-          <a class="text-link" href="#archive" id="writingCount">全部归档</a>
-        </div>
-        <div class="writing-list" id="writingList"></div>
-      </section>
-
-      <section class="section" id="photography" aria-labelledby="photo-title">
-        <div class="section-heading row">
-          <div>
-            <p class="eyebrow">Photography</p>
-            <h2 id="photo-title">摄影</h2>
-          </div>
-          <div>
-            <p class="section-note" id="photoCount"></p>
-            <div class="filter-bar" id="photoFilters" aria-label="摄影分类筛选"></div>
-          </div>
-        </div>
-        <div class="photo-grid" id="photoGrid"></div>
-      </section>
-
-      <section class="section" id="video" aria-labelledby="video-title">
-        <div class="section-heading row">
-          <div>
-            <p class="eyebrow">Video</p>
-            <h2 id="video-title">剪辑视频</h2>
-          </div>
-          <p class="section-note" id="videoCount"></p>
-        </div>
-        <div class="video-grid" id="videoGrid"></div>
-      </section>
-
-      <section class="section archive" id="archive" aria-labelledby="archive-title">
-        <div class="section-heading">
-          <p class="eyebrow">Archive</p>
-          <h2 id="archive-title">归档索引</h2>
-        </div>
-        <div class="archive-list" id="archiveList"></div>
       </section>
     </main>
 
