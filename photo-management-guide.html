@@ -145,11 +145,12 @@
         <div class="step">Step 01</div>
         <div>
           <h2>放入图片文件</h2>
-          <p>把图片文件放到以下文件夹：</p>
+          <p>把原始图片文件放到以下文件夹：</p>
           <pre><code>C:\Users\吴雪凡\Documents\Personal website\assets\photos</code></pre>
           <p class="note">
             建议文件名使用小写英文、数字和连字符，例如
             <code>250131-singapore-airport.JPG</code>。文件名尽量不要包含空格。
+            网页正式展示时优先使用 <code>assets/photos/display</code> 里的压缩图。
           </p>
         </div>
       </section>
@@ -168,7 +169,7 @@
   category: "新加坡",
   location: "新加坡-樟宜机场",
   description: "花园景观，令人震惊的园林水平",
-  src: "assets/photos/250131-singapore-airport.JPG",
+  src: "assets/photos/display/250131-singapore-airport.webp",
   relatedWritingIds: ["after-shooting-note"],
 },</code></pre>
           <p class="note">
@@ -180,6 +181,25 @@
 
       <section>
         <div class="step">Step 03</div>
+        <div>
+          <h2>生成压缩展示图</h2>
+          <p>
+            原图保留在 <code>assets/photos</code>，网页展示图放在
+            <code>assets/photos/display</code>，弹窗大图放在
+            <code>assets/photos/large</code>。两者都建议使用 <code>.webp</code> 格式。
+          </p>
+          <pre><code>assets/photos/250131-singapore-airport.JPG
+assets/photos/display/250131-singapore-airport.webp
+assets/photos/large/250131-singapore-airport.webp</code></pre>
+          <p class="note">
+            当前推荐标准：展示图长边 1800px、WebP 质量约 80；
+            大图长边 3000px、WebP 质量约 86。列表加载展示图，点击弹窗加载大图。
+          </p>
+        </div>
+      </section>
+
+      <section>
+        <div class="step">Step 04</div>
         <div>
           <h2>把照片加入摄影集</h2>
           <p>
@@ -199,7 +219,7 @@
       </section>
 
       <section>
-        <div class="step">Step 04</div>
+        <div class="step">Step 05</div>
         <div>
           <h2>关联摄影与文字</h2>
           <p>
@@ -224,7 +244,7 @@
       </section>
 
       <section>
-        <div class="step">Step 05</div>
+        <div class="step">Step 06</div>
         <div>
           <h2>新建摄影集</h2>
           <p>在 <code>photoCollections</code> 里新增一组数据：</p>
@@ -247,7 +267,7 @@
       </section>
 
       <section>
-        <div class="step">Step 06</div>
+        <div class="step">Step 07</div>
         <div>
           <h2>预览摄影集</h2>
           <p>本地打开以下格式的地址：</p>

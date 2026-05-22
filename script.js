@@ -89,11 +89,14 @@
 
   const photoArt = () => el("div", "fallback-art");
 
-  const renderImage = (item) => {
+  const largeImageSrc = (item) =>
+    item.largeSrc || (item.src ? item.src.replace("/display/", "/large/") : "");
+
+  const renderImage = (item, variant = "display") => {
     if (!item.src) return photoArt();
 
     const image = el("img");
-    image.src = item.src;
+    image.src = variant === "large" ? largeImageSrc(item) || item.src : item.src;
     image.alt = item.title;
     image.loading = "lazy";
     return image;
@@ -134,7 +137,7 @@
   };
 
   const openModal = (item, type) => {
-    modal.media.replaceChildren(type === "视频" ? renderVideoMedia(item) : renderImage(item));
+    modal.media.replaceChildren(type === "视频" ? renderVideoMedia(item) : renderImage(item, "large"));
     modal.title.textContent = item.title;
     modal.meta.textContent = [type, item.category, item.location, formatDate(item.date)]
       .filter(Boolean)
@@ -161,7 +164,7 @@
       modal.description.insertAdjacentElement("afterend", related);
     }
 
-    const linkTarget = type === "摄影" ? item.src : item.url;
+    const linkTarget = type === "摄影" ? largeImageSrc(item) || item.src : item.url;
     modal.link.href = isRealUrl(linkTarget) ? linkTarget : "#";
     modal.link.classList.toggle("is-hidden", !isRealUrl(linkTarget));
     modal.link.textContent = type === "摄影" ? "打开图片" : "打开原链接";

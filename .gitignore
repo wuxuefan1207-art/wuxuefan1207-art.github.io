@@ -1,2 +1,8 @@
 .edge-test-profile/
 verification-*.png
+assets/photos/*.jpg
+assets/photos/*.jpeg
+assets/photos/*.png
+assets/photos/*.JPG
+assets/photos/*.JPEG
+assets/photos/*.PNG

@@ -305,7 +305,7 @@ h3 {
   content: "";
   background-image:
     linear-gradient(180deg, rgba(21, 29, 26, 0.04), rgba(21, 29, 26, 0.25)),
-    url("assets/photos/260307-yulan-01.JPG");
+    url("assets/photos/display/260307-yulan-01.webp");
   background-position: center;
   background-size: cover;
 }
@@ -325,7 +325,7 @@ h3 {
 .hero-frame-b::before {
   background-image:
     linear-gradient(120deg, rgba(244, 240, 232, 0.42), rgba(21, 29, 26, 0.2)),
-    url("assets/photos/260307-yulan-01.JPG");
+    url("assets/photos/display/260307-yulan-01.webp");
   background-position: 36% 42%;
   background-size: 150%;
 }
@@ -333,7 +333,7 @@ h3 {
 .hero-frame-c::before {
   background-image:
     linear-gradient(145deg, rgba(154, 79, 61, 0.64), rgba(255, 253, 247, 0.34) 54%, rgba(47, 107, 99, 0.82)),
-    url("assets/photos/260307-yulan-01.JPG");
+    url("assets/photos/display/260307-yulan-01.webp");
   background-position: 48% 52%;
   background-size: 220%;
 }
