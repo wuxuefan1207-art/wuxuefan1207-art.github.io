@@ -14,6 +14,7 @@ window.SITE_CONTENT = {
   },
   writing: [
     {
+      id: "first-writing",
       title: "第一篇文字的标题",
       date: "2026-05-21",
       category: "随笔",
@@ -21,6 +22,7 @@ window.SITE_CONTENT = {
       url: "#",
     },
     {
+      id: "after-shooting-note",
       title: "一次拍摄之后的记录",
       date: "2026-05-12",
       category: "札记",
@@ -28,6 +30,7 @@ window.SITE_CONTENT = {
       url: "#",
     },
     {
+      id: "personal-archive-note",
       title: "长期维护一个私人档案",
       date: "2026-04-28",
       category: "备忘",
@@ -37,6 +40,7 @@ window.SITE_CONTENT = {
   ],
   photos: [
     {
+      id: "250131-singapore-airport",
       title: "樟宜机场-Changi Airport",
       date: "2025-01-31",
       category: "新加坡",
@@ -45,6 +49,7 @@ window.SITE_CONTENT = {
       src: "assets/photos/250131-singapore-airport.JPG",
     },
     {
+      id: "250204-singapore-church",
       title: "圣安德烈教堂-St Andrew's Cathedral",
       date: "2025-02-04",
       category: "新加坡",
@@ -53,6 +58,7 @@ window.SITE_CONTENT = {
       src: "assets/photos/250204-singapore-church.JPG",
     },
     {
+      id: "250204-singapore-muslim",
       title: "苏丹回教堂-Sultan Mosque",
       date: "2025-01-31",
       category: "新加坡",
@@ -61,6 +67,7 @@ window.SITE_CONTENT = {
       src: "assets/photos/250204-singapore-muslim.JPG",
     },
     {
+      id: "250202-singapore-beach",
       title: "圣淘沙-Sentosa",
       date: "2025-02-02",
       category: "新加坡",
@@ -69,6 +76,7 @@ window.SITE_CONTENT = {
       src: "assets/photos/250202-singapore-beach.JPG",
     },
     {
+      id: "250201-singapore-wolf",
       title: "那串晶莹的口水",
       date: "2025-02-01",
       category: "新加坡",
@@ -77,6 +85,7 @@ window.SITE_CONTENT = {
       src: "assets/photos/250201-singapore-wolf.JPG",
     },
     {
+      id: "250201-singapore-lizard",
       title: "两爬魅力",
       date: "2025-02-01",
       category: "新加坡",
@@ -85,6 +94,7 @@ window.SITE_CONTENT = {
       src: "assets/photos/250201-singapore-lizard.JPG",
     },
     {
+      id: "250301-light-01",
       title: "虚拟手电筒-Fictitious flashlight",
       date: "2025-03-01",
       category: "灵感",
@@ -93,6 +103,7 @@ window.SITE_CONTENT = {
       src: "assets/photos/250301-light-01.JPG",
     },
     {
+      id: "260307-yulan-01",
       title: "玉兰",
       date: "2026-03-07",
       category: "日常",
@@ -101,6 +112,7 @@ window.SITE_CONTENT = {
       src: "assets/photos/260307-yulan-01.JPG",
     },
     {
+      id: "260516-street-light",
       title: "街角的光",
       date: "2026-05-16",
       category: "城市",
@@ -109,6 +121,7 @@ window.SITE_CONTENT = {
       src: "",
     },
     {
+      id: "260502-rain-window",
       title: "雨后的窗",
       date: "2026-05-02",
       category: "日常",
@@ -117,12 +130,66 @@ window.SITE_CONTENT = {
       src: "",
     },
     {
+      id: "260419-evening-crowd",
       title: "傍晚的人群",
       date: "2026-04-19",
       category: "纪实",
       location: "Street",
       description: "如果暂时没有图片文件，页面会先显示占位视觉。",
       src: "",
+    },
+  ],
+  photoCollections: [
+    {
+      id: "singapore-2025",
+      title: "Singapore 2025",
+      subtitle: "新加坡",
+      dateRange: "2025.01-2025.02",
+      location: "Singapore",
+      description: "围绕城市、园林、宗教建筑与游客视角的旅行观察。",
+      cover: "250131-singapore-airport",
+      featured: true,
+      photoIds: [
+        "250131-singapore-airport",
+        "250204-singapore-church",
+        "250204-singapore-muslim",
+        "250202-singapore-beach",
+        "250201-singapore-wolf",
+        "250201-singapore-lizard",
+      ],
+    },
+    {
+      id: "religious-quiet",
+      title: "Religious Quiet",
+      subtitle: "宗教宁静",
+      dateRange: "2025.01-2025.02",
+      location: "Singapore",
+      description: "关于宗教建筑、白色墙面、空间秩序与安静感的照片。",
+      cover: "250204-singapore-church",
+      featured: true,
+      photoIds: ["250204-singapore-church", "250204-singapore-muslim"],
+    },
+    {
+      id: "light-inspiration",
+      title: "Light / Inspiration",
+      subtitle: "光与灵感",
+      dateRange: "2025.03",
+      location: "Hangzhou",
+      description: "从展览现场、光线装置和偶然的观看经验里收集灵感。",
+      cover: "250301-light-01",
+      featured: true,
+      photoIds: ["250301-light-01"],
+    },
+    {
+      id: "daily-observation",
+      title: "Daily Observation",
+      subtitle: "日常观察",
+      dateRange: "Ongoing",
+      location: "Hangzhou / Shanghai",
+      description: "把日常里短暂出现的颜色、植物、窗与街角保存下来。",
+      cover: "260307-yulan-01",
+      featured: true,
+      photoIds: ["260307-yulan-01"],
     },
   ],
   videos: [

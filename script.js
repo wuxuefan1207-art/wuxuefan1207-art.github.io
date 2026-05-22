@@ -3,6 +3,20 @@
 
   const content = window.SITE_CONTENT;
   const visiblePhotos = () => content.photos.filter((photo) => photo.src);
+  const photoById = (id) => visiblePhotos().find((photo) => photo.id === id);
+  const writingById = (id) => content.writing.find((item) => item.id === id);
+  const collectionPhotos = (collection) =>
+    (collection.photoIds || []).map(photoById).filter(Boolean);
+  const collectionCover = (collection) =>
+    photoById(collection.cover) || collectionPhotos(collection)[0];
+  const shuffle = (items) => {
+    const list = [...items];
+    for (let index = list.length - 1; index > 0; index -= 1) {
+      const target = Math.floor(Math.random() * (index + 1));
+      [list[index], list[target]] = [list[target], list[index]];
+    }
+    return list;
+  };
 
   const byDateDesc = (a, b) => new Date(b.date) - new Date(a.date);
   const formatDate = (date) =>
@@ -126,6 +140,26 @@
       .filter(Boolean)
       .join(" · ");
     modal.description.textContent = item.excerpt || item.description || "";
+    modal.root.querySelectorAll(".related-writing").forEach((node) => node.remove());
+
+    const relatedWriting = (item.relatedWritingIds || []).map(writingById).filter(Boolean);
+    if (type === "摄影" && relatedWriting.length) {
+      const related = el("div", "related-writing");
+      related.appendChild(el("p", "eyebrow", "Related Writing"));
+      related.append(
+        ...relatedWriting.map((entry) => {
+          const link = el("a");
+          link.href = isRealUrl(entry.url) ? entry.url : "writing.html";
+          if (isRealUrl(entry.url)) {
+            link.target = "_blank";
+            link.rel = "noreferrer";
+          }
+          link.textContent = entry.title;
+          return link;
+        }),
+      );
+      modal.description.insertAdjacentElement("afterend", related);
+    }
 
     const linkTarget = type === "摄影" ? item.src : item.url;
     modal.link.href = isRealUrl(linkTarget) ? linkTarget : "#";
@@ -250,25 +284,42 @@
         : visiblePhotos().filter((photo) => photo.category === category);
 
     photoCount.textContent =
-      category === "全部" ? `共 ${visiblePhotos().length} 组照片` : `${category} · ${photos.length} 组`;
+      category === "全部" ? `共 ${visiblePhotos().length} 张照片，随机排列` : `${category} · ${photos.length} 张`;
 
     photoGrid.replaceChildren(
-      ...photos.sort(byDateDesc).map((item) => {
-        const card = el("button", "photo-card");
-        card.type = "button";
-        card.append(
-          renderImage(item),
-          el("div", "photo-caption"),
-        );
-        const caption = card.querySelector(".photo-caption");
-        caption.append(
-          el("h3", "", item.title),
-          el("p", "", `${item.location || "Unknown"} · ${formatDate(item.date)}`),
-        );
-        card.addEventListener("click", () => openModal(item, "摄影"));
-        return card;
-      }),
+      ...shuffle(photos).map((item) => photoCard(item)),
     );
+  };
+
+  const photoCard = (item, className = "") => {
+    const card = el("button", `photo-card${className ? ` ${className}` : ""}`);
+    card.type = "button";
+    card.append(renderImage(item), el("div", "photo-caption"));
+    const caption = card.querySelector(".photo-caption");
+    caption.append(
+      el("h3", "", item.title),
+      el("p", "", `${item.location || "Unknown"} · ${formatDate(item.date)}`),
+    );
+    card.addEventListener("click", () => openModal(item, "摄影"));
+    return card;
+  };
+
+  const collectionCard = (collection, isLarge = false) => {
+    const photos = collectionPhotos(collection);
+    const cover = collectionCover(collection);
+    const card = el("a", `collection-card${isLarge ? " is-large" : ""}`);
+    card.href = `collection.html?id=${encodeURIComponent(collection.id)}`;
+    if (cover) card.append(renderImage(cover));
+
+    const copy = el("span", "collection-copy");
+    copy.append(
+      el("span", "showcase-kicker", `${photos.length} 张照片 · ${collection.dateRange}`),
+      el("strong", "", collection.title),
+      el("span", "", collection.subtitle || collection.location || ""),
+      el("em", "", collection.description || ""),
+    );
+    card.appendChild(copy);
+    return card;
   };
 
   const renderPhotoShowcase = () => {
@@ -276,30 +327,121 @@
     const note = document.getElementById("photoShowcaseNote");
     if (!showcase || !note) return;
 
-    const source = visiblePhotos();
-    const categories = [...new Set(source.map((photo) => photo.category))];
-    note.textContent = `当前展示 ${categories.length} 个有封面的摄影主题，进入后可查看完整照片墙。`;
+    const collections = (content.photoCollections || []).filter((collection) => collection.featured);
+    note.textContent = `当前展示 ${collections.length} 个精选摄影集，进入后可查看对应主题下的照片。`;
 
-    showcase.replaceChildren(
-      ...categories.map((category) => {
-        const photos = source
-          .filter((photo) => photo.category === category)
-          .sort(byDateDesc);
-        const cover = photos[0];
-        const card = el("a", "showcase-card");
-        card.href = `photography.html?category=${encodeURIComponent(category)}`;
-        card.append(renderImage(cover));
+    showcase.replaceChildren(...collections.slice(0, 5).map((collection) => collectionCard(collection)));
+  };
 
-        const copy = el("span", "showcase-copy");
-        copy.append(
-          el("span", "showcase-kicker", `${photos.length} 组照片`),
-          el("strong", "", category),
-          el("span", "", cover.description || cover.location || ""),
-        );
-        card.appendChild(copy);
-        return card;
-      }),
+  const renderPhotoCollections = () => {
+    const grid = document.getElementById("photoCollectionGrid");
+    if (!grid) return;
+
+    const collections = content.photoCollections || [];
+    grid.replaceChildren(
+      ...collections.map((collection, index) => collectionCard(collection, index === 0)),
     );
+  };
+
+  const renderCollectionPage = () => {
+    const hero = document.getElementById("collectionHero");
+    const grid = document.getElementById("collectionPhotoGrid");
+    const title = document.getElementById("collectionPhotosTitle");
+    const nav = document.getElementById("collectionNav");
+    if (!hero || !grid) return;
+
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id");
+    const collections = content.photoCollections || [];
+    const collectionIndex = collections.findIndex((item) => item.id === id);
+    const collection = collections[collectionIndex];
+
+    if (!collection) {
+      document.title = `未找到摄影集 | ${content.profile.name}`;
+      hero.classList.add("collection-hero-empty");
+      hero.append(
+        el("p", "eyebrow", "Photography"),
+        el("h1", "", "未找到摄影集"),
+        el("p", "", "这个摄影集可能还没有创建，或链接地址不完整。"),
+        el("a", "button secondary", "返回摄影页"),
+      );
+      hero.querySelector("a").href = "photography.html";
+      return;
+    }
+
+    const photos = collectionPhotos(collection);
+    const cover = collectionCover(collection);
+    document.title = `${collection.title} | 摄影集`;
+    if (title) title.textContent = `${collection.title} · ${photos.length} 张照片`;
+
+    const copy = el("div", "collection-hero-copy");
+    const metaList = el("dl", "collection-meta-list");
+    [
+      ["主题", collection.subtitle],
+      ["地点", collection.location],
+      ["时间", collection.dateRange],
+      ["数量", `${photos.length} 张照片`],
+    ]
+      .filter(([, value]) => value)
+      .forEach(([label, value]) => {
+        const item = el("div");
+        item.append(el("dt", "", label), el("dd", "", value));
+        metaList.appendChild(item);
+      });
+
+    copy.append(
+      el("p", "eyebrow", "Photography Collection"),
+      el("h1", "", collection.title),
+      el("p", "", collection.description),
+      metaList,
+    );
+
+    const media = el("div", "collection-hero-media");
+    if (cover) media.append(renderImage(cover));
+    hero.replaceChildren(copy, media);
+
+    const sequence = [];
+    photos.forEach((item, index) => {
+      const classes = [
+        index === 0 ? "is-featured-photo" : "",
+        index === 1 ? "is-quiet-photo" : "",
+        index === 2 ? "is-tall-photo" : "",
+      ]
+        .filter(Boolean)
+        .join(" ");
+      sequence.push(photoCard(item, classes));
+
+      if (index === 1 && photos.length > 3) {
+        const note = el("aside", "collection-sequence-note");
+        note.append(
+          el("p", "eyebrow", "Sequence"),
+          el("strong", "", collection.subtitle || collection.title),
+          el("span", "", collection.description),
+        );
+        sequence.push(note);
+      }
+    });
+    grid.replaceChildren(...sequence);
+
+    if (nav && collections.length > 1) {
+      const previous = collections[(collectionIndex - 1 + collections.length) % collections.length];
+      const next = collections[(collectionIndex + 1) % collections.length];
+      nav.replaceChildren(
+        collectionNavLink(previous, "上一组", "Previous"),
+        collectionNavLink(next, "下一组", "Next"),
+      );
+    }
+  };
+
+  const collectionNavLink = (collection, label, direction) => {
+    const link = el("a", "collection-nav-link");
+    link.href = `collection.html?id=${encodeURIComponent(collection.id)}`;
+    link.append(
+      el("span", "showcase-kicker", direction),
+      el("strong", "", label),
+      el("em", "", collection.title),
+    );
+    return link;
   };
 
   const renderPhotoFilters = () => {
@@ -409,7 +551,7 @@
     const currentPage = window.location.pathname.split("/").pop() || "index.html";
     links.forEach((link) => {
       const href = link.getAttribute("href");
-      if (href === currentPage) {
+      if (href === currentPage || (currentPage === "collection.html" && href === "photography.html")) {
         link.classList.add("is-active");
         link.setAttribute("aria-current", "page");
       }
@@ -450,7 +592,7 @@
   const setupReveal = () => {
     const targets = [
       ...document.querySelectorAll(
-        ".section, .card, .writing-item, .photo-card, .video-card, .archive-row",
+        ".section, .collection-card, .collection-hero, .card, .writing-item, .photo-card, .video-card, .archive-row",
       ),
     ];
 
@@ -479,6 +621,8 @@
   renderLatest();
   renderWriting();
   renderPhotoShowcase();
+  renderPhotoCollections();
+  renderCollectionPage();
   renderPhotoFilters();
   if (!document.getElementById("photoFilters")) renderPhotos();
   renderVideos();

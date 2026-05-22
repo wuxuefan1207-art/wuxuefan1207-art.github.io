@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>摄影内容后台操作手册 | Sophie Wu</title>
+    <style>
+      :root {
+        --bg: #f4f0e8;
+        --surface: #fffdf7;
+        --ink: #1f2421;
+        --muted: #6e746f;
+        --line: #ded6c9;
+        --accent: #9a4f3d;
+        --accent-2: #2f6b63;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family:
+          Inter, "Noto Sans SC", "Microsoft YaHei", system-ui, -apple-system,
+          BlinkMacSystemFont, "Segoe UI", sans-serif;
+        line-height: 1.75;
+      }
+
+      main {
+        width: min(920px, calc(100% - 40px));
+        margin: 0 auto;
+        padding: 72px 0 96px;
+      }
+
+      header {
+        margin-bottom: 54px;
+        border-bottom: 1px solid var(--line);
+        padding-bottom: 34px;
+      }
+
+      .eyebrow {
+        margin: 0 0 12px;
+        color: var(--accent);
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      h1,
+      h2,
+      p {
+        margin-top: 0;
+      }
+
+      h1 {
+        margin-bottom: 18px;
+        font-family: Georgia, "Noto Serif SC", serif;
+        font-size: clamp(42px, 6vw, 72px);
+        font-weight: 500;
+        line-height: 1.05;
+      }
+
+      h2 {
+        margin: 0 0 14px;
+        font-size: 22px;
+        line-height: 1.35;
+      }
+
+      section {
+        display: grid;
+        grid-template-columns: 160px minmax(0, 1fr);
+        gap: clamp(22px, 4vw, 52px);
+        padding: 34px 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .step {
+        color: var(--accent-2);
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      p,
+      li {
+        color: var(--muted);
+      }
+
+      code,
+      pre {
+        font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      }
+
+      code {
+        color: var(--ink);
+      }
+
+      pre {
+        overflow-x: auto;
+        margin: 16px 0 0;
+        padding: 18px;
+        border: 1px solid var(--line);
+        background: var(--surface);
+        color: var(--ink);
+        line-height: 1.55;
+      }
+
+      .note {
+        margin-top: 18px;
+        padding: 16px 18px;
+        border-left: 3px solid var(--accent-2);
+        background: rgba(255, 253, 247, 0.58);
+      }
+
+      @media (max-width: 720px) {
+        main {
+          width: min(100% - 32px, 920px);
+          padding-top: 46px;
+        }
+
+        section {
+          grid-template-columns: 1fr;
+          gap: 8px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <p class="eyebrow">Photography Workflow</p>
+        <h1>摄影内容后台操作手册</h1>
+        <p>
+          这份文档用于记录如何在网站文件夹中新增图片、登记照片信息、建立摄影集，
+          以及让同一张照片出现在多个主题中。
+        </p>
+      </header>
+
+      <section>
+        <div class="step">Step 01</div>
+        <div>
+          <h2>放入图片文件</h2>
+          <p>把图片文件放到以下文件夹：</p>
+          <pre><code>C:\Users\吴雪凡\Documents\Personal website\assets\photos</code></pre>
+          <p class="note">
+            建议文件名使用小写英文、数字和连字符，例如
+            <code>250131-singapore-airport.JPG</code>。文件名尽量不要包含空格。
+          </p>
+        </div>
+      </section>
+
+      <section>
+        <div class="step">Step 02</div>
+        <div>
+          <h2>登记单张照片</h2>
+          <p>打开以下文件：</p>
+          <pre><code>C:\Users\吴雪凡\Documents\Personal website\content\site-content.js</code></pre>
+          <p>在 <code>photos: [</code> 里面新增一条照片记录：</p>
+          <pre><code>{
+  id: "250131-singapore-airport",
+  title: "樟宜机场-Changi Airport",
+  date: "2025-01-31",
+  category: "新加坡",
+  location: "新加坡-樟宜机场",
+  description: "花园景观，令人震惊的园林水平",
+  src: "assets/photos/250131-singapore-airport.JPG",
+  relatedWritingIds: ["after-shooting-note"],
+},</code></pre>
+          <p class="note">
+            <code>id</code> 建议和图片文件名一致，但不要带 <code>.JPG</code> 后缀。
+            <code>relatedWritingIds</code> 是可选字段，用于关联文字内容；没有相关文字时可以不写。
+          </p>
+        </div>
+      </section>
+
+      <section>
+        <div class="step">Step 03</div>
+        <div>
+          <h2>把照片加入摄影集</h2>
+          <p>
+            在同一个文件中找到 <code>photoCollections: [</code>，
+            然后把照片 <code>id</code> 加入对应摄影集的 <code>photoIds</code>。
+          </p>
+          <pre><code>photoIds: [
+  "250131-singapore-airport",
+  "250204-singapore-church",
+],</code></pre>
+          <p class="note">
+            同一张照片可以出现在多个摄影集中，只需要在多个
+            <code>photoIds</code> 里重复引用同一个 <code>id</code>。
+            图片文件本身只存一份。
+          </p>
+        </div>
+      </section>
+
+      <section>
+        <div class="step">Step 04</div>
+        <div>
+          <h2>关联摄影与文字</h2>
+          <p>
+            每篇文字需要有自己的 <code>id</code>。照片如果与某篇文字相关，
+            就在照片记录里加入 <code>relatedWritingIds</code>。
+          </p>
+          <pre><code>{
+  id: "after-shooting-note",
+  title: "一次拍摄之后的记录",
+  date: "2026-05-12",
+  category: "札记",
+  excerpt: "可以写下拍摄现场、剪辑想法，或者某个阶段的观察。",
+  url: "#",
+},</code></pre>
+          <pre><code>relatedWritingIds: ["after-shooting-note"]</code></pre>
+          <p class="note">
+            一张照片可以关联多篇文字，例如
+            <code>relatedWritingIds: ["after-shooting-note", "personal-archive-note"]</code>。
+            关联后，照片弹窗说明里会出现相关文字入口。
+          </p>
+        </div>
+      </section>
+
+      <section>
+        <div class="step">Step 05</div>
+        <div>
+          <h2>新建摄影集</h2>
+          <p>在 <code>photoCollections</code> 里新增一组数据：</p>
+          <pre><code>{
+  id: "religious-quiet",
+  title: "Religious Quiet",
+  subtitle: "宗教宁静",
+  dateRange: "2025.01-2025.02",
+  location: "Singapore",
+  description: "关于宗教建筑、白色墙面、空间秩序与安静感的照片。",
+  cover: "250204-singapore-church",
+  featured: true,
+  photoIds: ["250204-singapore-church", "250204-singapore-muslim"],
+},</code></pre>
+          <p class="note">
+            <code>cover</code> 填某张照片的 <code>id</code>。
+            <code>featured: true</code> 表示这个摄影集会出现在首页摄影展厅和摄影页入口。
+          </p>
+        </div>
+      </section>
+
+      <section>
+        <div class="step">Step 06</div>
+        <div>
+          <h2>预览摄影集</h2>
+          <p>本地打开以下格式的地址：</p>
+          <pre><code>collection.html?id=摄影集id</code></pre>
+          <p>例如：</p>
+          <pre><code>collection.html?id=singapore-2025</code></pre>
+        </div>
+      </section>
+
+      <section>
+        <div class="step">Template</div>
+        <div>
+          <h2>给 Codex 的资料格式</h2>
+          <p>如果你希望我帮你更新，可以直接按这个格式发给我：</p>
+          <pre><code>文件名：
+标题：
+日期：
+分类/主题：
+地点：
+一句说明：
+可归入摄影集：
+相关文字：
+是否作为封面：</code></pre>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
