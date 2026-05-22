@@ -155,7 +155,6 @@
   };
 
   const setProfile = () => {
-    document.title = `${content.profile.name} | 文字 摄影 影像`;
     const siteName = document.getElementById("siteName");
     const siteTagline = document.getElementById("siteTagline");
     const siteIntro = document.getElementById("siteIntro");
