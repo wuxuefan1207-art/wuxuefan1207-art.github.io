@@ -20,6 +20,12 @@
     return list;
   };
 
+  const photoMasonryColumnCount = () => {
+    if (window.matchMedia("(max-width: 520px)").matches) return 1;
+    if (window.matchMedia("(max-width: 780px)").matches) return 2;
+    return 3;
+  };
+
   const byDateDesc = (a, b) => new Date(b.date) - new Date(a.date);
   const formatDate = (date) =>
     new Intl.DateTimeFormat("zh-CN", {
@@ -101,6 +107,7 @@
     image.src = variant === "large" ? largeImageSrc(item) || item.src : item.src;
     image.alt = item.title;
     image.loading = "lazy";
+    image.decoding = "async";
     return image;
   };
 
@@ -292,9 +299,28 @@
     photoCount.textContent =
       category === "全部" ? `共 ${visiblePhotos().length} 张照片，随机排列` : `${category} · ${photos.length} 张`;
 
-    photoGrid.replaceChildren(
-      ...shuffle(photos).map((item) => photoCard(item, "is-index-photo")),
-    );
+    photoGrid.replaceChildren();
+    photoGrid.style.removeProperty("grid-template-columns");
+
+    const shuffledPhotos = shuffle(photos);
+    const columnCount = photoMasonryColumnCount();
+    const columns = Array.from({ length: columnCount }, () => el("div", "masonry-column"));
+    photoGrid.style.gridTemplateColumns = `repeat(${columnCount}, minmax(0, 1fr))`;
+    photoGrid.append(...columns);
+
+    const renderBatch = (start = 0) => {
+      shuffledPhotos.slice(start, start + 12).forEach((item, index) => {
+        const card = photoCard(item, "is-index-photo");
+        card.classList.add("is-visible");
+        columns[(start + index) % columnCount].appendChild(card);
+      });
+
+      if (start + 12 < shuffledPhotos.length) {
+        window.requestAnimationFrame(() => renderBatch(start + 12));
+      }
+    };
+
+    renderBatch();
   };
 
   const photoCard = (item, className = "") => {
@@ -606,7 +632,9 @@
       ),
     ];
 
-    targets.forEach((target) => target.classList.add("reveal"));
+    targets
+      .filter((target) => !target.closest(".all-photos-grid") && !target.classList.contains("photo-archive-section"))
+      .forEach((target) => target.classList.add("reveal"));
 
     if (!("IntersectionObserver" in window)) {
       targets.forEach((target) => target.classList.add("is-visible"));
