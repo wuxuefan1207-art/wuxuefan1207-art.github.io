@@ -136,8 +136,8 @@
         <p class="eyebrow">Photography Workflow</p>
         <h1>摄影内容后台操作手册</h1>
         <p>
-          这份文档用于记录如何在网站文件夹中新增图片、登记照片信息、建立摄影集，
-          以及让同一张照片出现在多个主题中。
+          这份文档用于记录如何在网站文件夹中新增图片、登记照片信息、标注关键词，
+          以及把照片组织进线上摄影展。
         </p>
       </header>
 
@@ -165,12 +165,16 @@
           <pre><code>{
   id: "250131-singapore-airport",
   title: "樟宜机场-Changi Airport",
+  titleEn: "Changi Airport",
   date: "2025-01-31",
   category: "新加坡",
   location: "新加坡-樟宜机场",
+  locationEn: "Singapore - Changi Airport",
   description: "花园景观，令人震惊的园林水平",
+  descriptionEn: "Garden-like scenery, with a striking level of landscape design.",
   src: "assets/photos/display/250131-singapore-airport.webp",
   keywords: ["新加坡", "机场", "园林", "旅行观察"],
+  keywordsEn: ["Singapore", "Airport", "Landscape", "Travel Observation"],
   relatedWritingIds: ["after-shooting-note"],
   exhibitionIds: ["example-exhibition"],
 },</code></pre>
@@ -178,6 +182,7 @@
             <code>id</code> 建议和图片文件名一致，但不要带 <code>.JPG</code> 后缀。
             <code>keywords</code>、<code>relatedWritingIds</code>、<code>exhibitionIds</code>
             都可以先留空数组。
+            你只需要提供中文信息，Codex 会默认补充自然英文版本。
           </p>
         </div>
       </section>
@@ -204,26 +209,6 @@ assets/photos/large/250131-singapore-airport.webp</code></pre>
       <section>
         <div class="step">Step 04</div>
         <div>
-          <h2>把照片加入摄影集</h2>
-          <p>
-            在同一个文件中找到 <code>photoCollections: [</code>，
-            然后把照片 <code>id</code> 加入对应摄影集的 <code>photoIds</code>。
-          </p>
-          <pre><code>photoIds: [
-  "250131-singapore-airport",
-  "250204-singapore-church",
-],</code></pre>
-          <p class="note">
-            同一张照片可以出现在多个摄影集中，只需要在多个
-            <code>photoIds</code> 里重复引用同一个 <code>id</code>。
-            图片文件本身只存一份。
-          </p>
-        </div>
-      </section>
-
-      <section>
-        <div class="step">Step 05</div>
-        <div>
           <h2>标注关键词与摄影展</h2>
           <p>
             关键词用于描述照片内部的线索；摄影展 ID 用于说明这张照片属于哪些线上摄影展。
@@ -240,7 +225,7 @@ exhibitionIds: ["religious-quiet-online"],</code></pre>
       </section>
 
       <section>
-        <div class="step">Step 06</div>
+        <div class="step">Step 05</div>
         <div>
           <h2>关联摄影与文字</h2>
           <p>
@@ -265,40 +250,6 @@ exhibitionIds: ["religious-quiet-online"],</code></pre>
       </section>
 
       <section>
-        <div class="step">Step 07</div>
-        <div>
-          <h2>新建摄影集</h2>
-          <p>在 <code>photoCollections</code> 里新增一组数据：</p>
-          <pre><code>{
-  id: "religious-quiet",
-  title: "Religious Quiet",
-  subtitle: "宗教宁静",
-  dateRange: "2025.01-2025.02",
-  location: "Singapore",
-  description: "关于宗教建筑、白色墙面、空间秩序与安静感的照片。",
-  cover: "250204-singapore-church",
-  featured: true,
-  photoIds: ["250204-singapore-church", "250204-singapore-muslim"],
-},</code></pre>
-          <p class="note">
-            <code>cover</code> 填某张照片的 <code>id</code>。
-            <code>featured: true</code> 表示这个摄影集会出现在首页摄影展厅和摄影页入口。
-          </p>
-        </div>
-      </section>
-
-      <section>
-        <div class="step">Step 08</div>
-        <div>
-          <h2>预览摄影集</h2>
-          <p>本地打开以下格式的地址：</p>
-          <pre><code>collection.html?id=摄影集id</code></pre>
-          <p>例如：</p>
-          <pre><code>collection.html?id=singapore-2025</code></pre>
-        </div>
-      </section>
-
-      <section>
         <div class="step">Template</div>
         <div>
           <h2>给 Codex 的资料格式</h2>
@@ -310,10 +261,12 @@ exhibitionIds: ["religious-quiet-online"],</code></pre>
 地点：
 一句说明：
 关键词：
-可归入摄影集：
 相关文字：
-可归入摄影展：
-是否作为封面：</code></pre>
+可归入摄影展：</code></pre>
+          <p class="note">
+            如果只提供中文，Codex 会补充 <code>titleEn</code>、<code>locationEn</code>、
+            <code>descriptionEn</code> 和 <code>keywordsEn</code>。
+          </p>
         </div>
       </section>
     </main>

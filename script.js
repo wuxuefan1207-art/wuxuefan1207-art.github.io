@@ -7,8 +7,10 @@
   const writingById = (id) => content.writing.find((item) => item.id === id);
   const collectionPhotos = (collection) =>
     (collection.photoIds || []).map(photoById).filter(Boolean);
-  const collectionCover = (collection) =>
-    photoById(collection.cover) || collectionPhotos(collection)[0];
+  const collectionCover = (collection) => {
+    const photos = collectionPhotos(collection);
+    return photos.length ? photos[Math.floor(Math.random() * photos.length)] : null;
+  };
   const shuffle = (items) => {
     const list = [...items];
     for (let index = list.length - 1; index > 0; index -= 1) {
