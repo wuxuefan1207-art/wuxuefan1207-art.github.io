@@ -26,6 +26,19 @@
     return 3;
   };
 
+  const categoryLabel = (category) => {
+    const labels = {
+      全部: "All / 全部",
+      新加坡: "Singapore / 新加坡",
+      香港: "Hong Kong / 香港",
+      杭州: "Hangzhou / 杭州",
+      合肥: "Hefei / 合肥",
+      太平: "Taiping / 太平",
+      灵感: "Inspiration / 灵感",
+    };
+    return labels[category] || category;
+  };
+
   const byDateDesc = (a, b) => new Date(b.date) - new Date(a.date);
   const formatDate = (date) =>
     new Intl.DateTimeFormat("zh-CN", {
@@ -147,12 +160,39 @@
 
   const openModal = (item, type) => {
     modal.media.replaceChildren(type === "视频" ? renderVideoMedia(item) : renderImage(item, "large"));
-    modal.title.textContent = item.title;
-    modal.meta.textContent = [type, item.category, item.location, formatDate(item.date)]
+    const bilingualTitle = item.titleEn && item.titleEn !== item.title ? `${item.title} / ${item.titleEn}` : item.title;
+    const bilingualLocation =
+      item.locationEn && item.locationEn !== item.location ? `${item.location} / ${item.locationEn}` : item.location;
+    const bilingualDescription =
+      item.descriptionEn && item.descriptionEn !== item.description
+        ? `${item.description || ""}\n${item.descriptionEn}`
+        : item.excerpt || item.description || "";
+
+    modal.title.textContent = bilingualTitle;
+    modal.meta.textContent = [type === "摄影" ? "Photography / 摄影" : type, item.category, formatDate(item.date)]
       .filter(Boolean)
       .join(" · ");
-    modal.description.textContent = item.excerpt || item.description || "";
-    modal.root.querySelectorAll(".related-writing").forEach((node) => node.remove());
+    modal.description.textContent = bilingualDescription;
+    modal.root.querySelectorAll(".modal-details, .related-writing").forEach((node) => node.remove());
+
+    if (type === "摄影") {
+      const details = el("dl", "modal-details");
+      [
+        ["Date / 日期", formatDate(item.date)],
+        ["Location / 地点", bilingualLocation],
+        [
+          "Keywords / 关键词",
+          [...(item.keywordsEn || []), ...(item.keywords || [])].filter(Boolean).join(" · "),
+        ],
+      ]
+        .filter(([, value]) => value)
+        .forEach(([label, value]) => {
+          const row = el("div");
+          row.append(el("dt", "", label), el("dd", "", value));
+          details.appendChild(row);
+        });
+      modal.description.insertAdjacentElement("afterend", details);
+    }
 
     const relatedWriting = (item.relatedWritingIds || []).map(writingById).filter(Boolean);
     if (type === "摄影" && relatedWriting.length) {
@@ -170,13 +210,14 @@
           return link;
         }),
       );
-      modal.description.insertAdjacentElement("afterend", related);
+      const details = modal.root.querySelector(".modal-details");
+      (details || modal.description).insertAdjacentElement("afterend", related);
     }
 
     const linkTarget = type === "摄影" ? largeImageSrc(item) || item.src : item.url;
     modal.link.href = isRealUrl(linkTarget) ? linkTarget : "#";
     modal.link.classList.toggle("is-hidden", !isRealUrl(linkTarget));
-    modal.link.textContent = type === "摄影" ? "打开图片" : "打开原链接";
+    modal.link.textContent = type === "摄影" ? "Open Image / 打开图片" : "Open Link / 打开原链接";
 
     modal.root.classList.add("is-open");
     modal.root.setAttribute("aria-hidden", "false");
@@ -297,7 +338,9 @@
         : visiblePhotos().filter((photo) => photo.category === category);
 
     photoCount.textContent =
-      category === "全部" ? `共 ${visiblePhotos().length} 张照片，随机排列` : `${category} · ${photos.length} 张`;
+      category === "全部"
+        ? `${visiblePhotos().length} photographs, shuffled / 共 ${visiblePhotos().length} 张照片，随机排列`
+        : `${categoryLabel(category)} · ${photos.length} 张`;
 
     photoGrid.replaceChildren();
     photoGrid.style.removeProperty("grid-template-columns");
@@ -345,7 +388,7 @@
 
     const copy = el("span", "collection-copy");
     copy.append(
-      el("span", "showcase-kicker", `${photos.length} 张照片 · ${collection.dateRange}`),
+      el("span", "showcase-kicker", `Exhibition · ${photos.length} photographs · ${collection.dateRange}`),
       el("strong", "", collection.title),
       el("span", "", collection.subtitle || collection.location || ""),
       el("em", "", collection.description || ""),
@@ -360,7 +403,7 @@
     if (!showcase || !note) return;
 
     const collections = (content.photoCollections || []).filter((collection) => collection.featured);
-    note.textContent = `当前展示 ${collections.length} 个精选摄影集，进入后可查看对应主题下的照片。`;
+    note.textContent = `Selected ${collections.length} exhibitions / 当前展示 ${collections.length} 个摄影展览`;
 
     showcase.replaceChildren(...collections.slice(0, 5).map((collection) => collectionCard(collection)));
   };
@@ -389,29 +432,29 @@
     const collection = collections[collectionIndex];
 
     if (!collection) {
-      document.title = `未找到摄影集 | ${content.profile.name}`;
+      document.title = `未找到摄影展览 | ${content.profile.name}`;
       hero.classList.add("collection-hero-empty");
       hero.append(
-        el("p", "eyebrow", "Photography"),
-        el("h1", "", "未找到摄影集"),
-        el("p", "", "这个摄影集可能还没有创建，或链接地址不完整。"),
-        el("a", "button secondary", "返回摄影页"),
+        el("p", "eyebrow", "Photography Exhibition"),
+        el("h1", "", "未找到摄影展览"),
+        el("p", "", "这个摄影展览可能还没有创建，或链接地址不完整。"),
+        el("a", "button secondary", "Back to Photography / 返回摄影页"),
       );
       hero.querySelector("a").href = "photography.html";
       return;
     }
 
     const photos = collectionPhotos(collection);
-    document.title = `${collection.title} | 摄影集`;
-    if (title) title.textContent = `${collection.title} · ${photos.length} 张照片`;
+    document.title = `${collection.title} | 摄影展览`;
+    if (title) title.textContent = `${collection.title} · ${photos.length} photographs / ${photos.length} 张照片`;
 
     const copy = el("div", "collection-hero-copy");
     const metaList = el("dl", "collection-meta-list");
     [
-      ["主题", collection.subtitle],
-      ["地点", collection.location],
-      ["时间", collection.dateRange],
-      ["数量", `${photos.length} 张照片`],
+      ["Theme / 主题", collection.subtitle],
+      ["Location / 地点", collection.location],
+      ["Time / 时间", collection.dateRange],
+      ["Works / 数量", `${photos.length} photographs / ${photos.length} 张照片`],
     ]
       .filter(([, value]) => value)
       .forEach(([label, value]) => {
@@ -421,7 +464,7 @@
       });
 
     copy.append(
-      el("p", "eyebrow", "Photography Collection"),
+      el("p", "eyebrow", "Photography Exhibition / 摄影展览"),
       el("h1", "", collection.title),
       el("p", "", collection.description),
       metaList,
@@ -429,7 +472,7 @@
 
     const summary = el("aside", "collection-hero-summary");
     summary.append(
-      el("span", "showcase-kicker", "Open Collection"),
+      el("span", "showcase-kicker", "Open Exhibition"),
       el("strong", "", `${photos.length}`),
       el("em", "", "photographs"),
     );
@@ -463,8 +506,8 @@
       const previous = collections[(collectionIndex - 1 + collections.length) % collections.length];
       const next = collections[(collectionIndex + 1) % collections.length];
       nav.replaceChildren(
-        collectionNavLink(previous, "上一组", "Previous"),
-        collectionNavLink(next, "下一组", "Next"),
+        collectionNavLink(previous, "Previous / 上一组", "Exhibition"),
+        collectionNavLink(next, "Next / 下一组", "Exhibition"),
       );
     }
   };
@@ -491,7 +534,7 @@
 
     filterBar.replaceChildren(
       ...categories.map((category) => {
-        const button = el("button", "filter-button", category);
+        const button = el("button", "filter-button", categoryLabel(category));
         button.type = "button";
         if (category === initialCategory) button.classList.add("is-active");
         button.addEventListener("click", () => {
